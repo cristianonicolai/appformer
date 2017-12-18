@@ -15,13 +15,7 @@
  */
 package org.uberfire.client;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -33,10 +27,10 @@ import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.html.Text;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ioc.client.api.EntryPoint;
@@ -64,6 +58,7 @@ import org.uberfire.client.views.pfly.menu.UserMenu;
 import org.uberfire.client.views.pfly.modal.Bs3Modal;
 import org.uberfire.client.views.pfly.modal.ErrorPopupView;
 import org.uberfire.client.views.pfly.sys.PatternFlyBootstrapper;
+import org.uberfire.client.views.pfly.widgets.Moment;
 import org.uberfire.client.workbench.events.ApplicationReadyEvent;
 import org.uberfire.client.workbench.widgets.menu.UtilityMenuBar;
 import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBar;
@@ -79,6 +74,7 @@ import org.uberfire.workbench.model.menu.Menus;
 
 import static org.uberfire.workbench.model.menu.MenuFactory.newTopLevelCustomMenu;
 import static org.uberfire.workbench.model.menu.MenuFactory.newTopLevelMenu;
+import static org.uberfire.client.views.pfly.widgets.Moment.Builder.*;
 
 /**
  * GWT's Entry-point for Uberfire-showcase
@@ -164,6 +160,20 @@ public class ShowcaseEntryPoint {
         hideLoadingPopup();
         GWT.log("PatternFly version: " + pflyEntryPoint.getPatternFlyVersion());
         GWT.log("Loaded MomentJS using locale: " + pflyEntryPoint.getMomentLocale());
+        try {
+            Date date = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss").parse("07/06/1983 15:30:12");
+            GWT.log("date: " + date);
+            GWT.log("date as long: " + date.getTime());
+            final Moment moment = moment(date.getTime());
+            GWT.log("moment: " + moment);
+            GWT.log("moment as long: " + moment.asLong());
+            GWT.log("moment format: " + moment.format());
+            GWT.log("moment fromNow: " + moment.fromNow());
+        } catch (Exception e){
+            e.printStackTrace();
+            GWT.log(e.getMessage());
+        }
+
     }
 
     private void setupMenu(@Observes final ApplicationReadyEvent event) {
